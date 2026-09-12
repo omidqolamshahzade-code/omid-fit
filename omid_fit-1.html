@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050608">
+<title>OMID FIT — مربی تمرین</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+ --bg:#05060a;--text:#f5f6f8;--muted:#a7adb8;
+ --accent:#ff5a36;--accent2:#e8461f;--accent-soft:rgba(255,90,54,.35);
+ --green:#36d98b;--yellow:#f3c85b;--red:#ff5b5b;--blue:#6292ff;
+ --glass:rgba(255,255,255,.07);--glass-strong:rgba(255,255,255,.13);
+ --glass-border:rgba(255,255,255,.16);--glass-border-soft:rgba(255,255,255,.08);
+ --blur:22px;--shadow:0 20px 55px rgba(0,0,0,.45);
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:'Vazirmatn',Tahoma,Arial,sans-serif;min-height:100%;-webkit-tap-highlight-color:transparent}
+body{padding-bottom:96px;position:relative;overflow-x:hidden}
+
+.orbs{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.orbs span{position:absolute;border-radius:50%;filter:blur(75px);opacity:.5}
+.orbs span:nth-child(1){width:360px;height:360px;background:#7c6cff;top:-100px;right:-70px;animation:float1 24s ease-in-out infinite}
+.orbs span:nth-child(2){width:320px;height:320px;background:var(--accent);bottom:40px;left:-110px;animation:float2 28s ease-in-out infinite}
+.orbs span:nth-child(3){width:280px;height:280px;background:#36d9c4;top:38%;right:15%;animation:float3 32s ease-in-out infinite}
+@keyframes float1{0%,100%{transform:translate(0,0)}50%{transform:translate(-30px,40px)}}
+@keyframes float2{0%,100%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}}
+@keyframes float3{0%,100%{transform:translate(0,0)}50%{transform:translate(-25px,-35px)}}
+@media(prefers-reduced-motion:reduce){.orbs span{animation:none}}
+
+.app{max-width:820px;margin:auto;min-height:100vh;position:relative;z-index:1}
+header{height:92px;padding:28px 18px 12px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:15;background:rgba(10,11,15,.5);backdrop-filter:blur(24px) saturate(170%);-webkit-backdrop-filter:blur(24px) saturate(170%);border-bottom:1px solid var(--glass-border-soft)}
+.logo{font-size:27px;font-weight:900;letter-spacing:-.3px}.logo i{color:var(--accent);font-style:normal}.sub{color:var(--muted);font-size:12px;line-height:1.9}
+main{padding:18px 14px 30px;position:relative;z-index:1}.view{display:none}.view.active{display:block}
+h1{font-size:24px;margin:8px 0 6px;font-weight:900}h2{font-size:18px;margin:0 0 12px;font-weight:800}
+.card{background:var(--glass);backdrop-filter:blur(var(--blur)) saturate(160%);-webkit-backdrop-filter:blur(var(--blur)) saturate(160%);border:1px solid var(--glass-border);border-radius:22px;padding:16px;margin:12px 0;box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.08)}
+.hero{padding:22px}.hero h1{margin-top:0}.accent{color:var(--accent)}
+button,input,textarea,select{font:inherit}
+button{border:0;border-radius:999px;padding:12px 18px;color:#fff;background:linear-gradient(180deg,var(--accent),var(--accent2));font-weight:800;cursor:pointer;box-shadow:0 8px 20px var(--accent-soft),inset 0 1px 0 rgba(255,255,255,.25);transition:transform .15s ease}
+button:active{transform:scale(.97)}
+button.secondary{background:var(--glass-strong);color:var(--text);border:1px solid var(--glass-border);box-shadow:inset 0 1px 0 rgba(255,255,255,.15)}
+button.green{background:linear-gradient(180deg,#42e8a0,var(--green));color:#07140e;box-shadow:0 8px 20px rgba(54,217,139,.3),inset 0 1px 0 rgba(255,255,255,.3)}
+button.danger{background:linear-gradient(180deg,#7a2c28,#5c1f1c);box-shadow:0 8px 20px rgba(124,44,40,.3)}
+button.blue{background:linear-gradient(180deg,#7ba0ff,var(--blue));color:#07101d;box-shadow:0 8px 20px rgba(98,146,255,.3)}
+button.small{padding:9px 12px;font-size:12px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}.actions>*{flex:1;min-width:118px}
+textarea,input,select{width:100%;background:rgba(255,255,255,.05);color:#fff;border:1px solid var(--glass-border);border-radius:14px;padding:11px;outline:none;backdrop-filter:blur(8px)}
+textarea:focus,input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+textarea{min-height:230px;resize:vertical;line-height:1.8}
+.template{font-size:12px;color:#c3c8d1;white-space:pre-wrap;background:rgba(0,0,0,.25);border:1px solid var(--glass-border-soft);border-radius:14px;padding:12px;line-height:1.9}
+.notice{background:rgba(255,90,54,.12);border:1px solid rgba(255,90,54,.3);color:#ffd8cf;border-radius:16px;padding:12px;font-size:12px;line-height:1.8;margin:10px 0;backdrop-filter:blur(10px)}
+.day{border:1px solid var(--glass-border);border-radius:20px;padding:14px;margin:10px 0;background:var(--glass);backdrop-filter:blur(18px)}
+.dayhead{display:flex;justify-content:space-between;align-items:center;gap:10px}.dayname{font-weight:900;font-size:16px}
+.exercise{background:var(--glass-strong);border:1px solid var(--glass-border);border-radius:20px;padding:14px;margin:12px 0;backdrop-filter:blur(18px)}
+.exhead{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.exname{font-size:16px;font-weight:900}.meta{font-size:11px;color:var(--muted);margin-top:5px}
+.badge{font-size:10px;border:1px solid var(--glass-border);border-radius:10px;padding:5px 8px;color:#dfe3e9;white-space:nowrap;background:rgba(255,255,255,.06)}
+.prev{font-size:11px;color:#c9ced6;background:rgba(0,0,0,.25);border-radius:12px;padding:9px;margin-top:10px;line-height:1.9}
+.tablewrap{overflow-x:auto;margin-top:7px}table{width:100%;min-width:520px;border-collapse:separate;border-spacing:0 6px}th{font-size:10px;color:var(--muted);font-weight:600}td{padding:3px}td:first-child{text-align:center;color:var(--muted);width:30px}
+.done{width:100%;background:rgba(255,255,255,.06);border:1px solid var(--glass-border);padding:9px;font-size:11px;border-radius:12px;color:#fff}.done.isdone{background:linear-gradient(180deg,#42e8a0,var(--green));color:#07140e;border-color:transparent}
+.metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.metric{background:rgba(255,255,255,.05);border:1px solid var(--glass-border-soft);border-radius:16px;padding:10px}.metric label{display:block;font-size:10px;color:var(--muted);margin-bottom:5px}
+.statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:var(--glass);backdrop-filter:blur(18px);border:1px solid var(--glass-border);border-radius:18px;padding:14px;text-align:center}.stat b{display:block;font-size:21px}.stat span{font-size:10px;color:var(--muted)}
+.empty{border:1px dashed var(--glass-border);border-radius:18px;padding:22px;text-align:center;color:var(--muted);line-height:2;margin-top:12px;background:rgba(255,255,255,.02)}
+.progress-good{color:var(--green)}.progress-bad{color:var(--red)}.progress-flat{color:var(--yellow)}
+.report-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.report-card{background:var(--glass);backdrop-filter:blur(18px);border:1px solid var(--glass-border);border-radius:16px;padding:14px}.report-card b{font-size:19px;display:block}.report-card span{font-size:10px;color:var(--muted)}
+.tabs{display:flex;gap:7px;background:var(--glass);backdrop-filter:blur(18px);border:1px solid var(--glass-border);border-radius:16px;padding:5px;margin:10px 0}.tabs button{flex:1;background:transparent;box-shadow:none;color:var(--muted);padding:9px}.tabs button.active{background:var(--glass-strong);color:#fff}
+.chart{background:rgba(0,0,0,.25);border:1px solid var(--glass-border);border-radius:16px;padding:10px;margin-top:10px;backdrop-filter:blur(12px)}.chart svg{width:100%;height:190px;display:block}.legend{display:flex;justify-content:space-between;color:var(--muted);font-size:10px;margin-top:4px}
+.history-item{background:var(--glass);backdrop-filter:blur(18px);border:1px solid var(--glass-border);border-radius:18px;padding:14px;margin:10px 0}.history-head{display:flex;justify-content:space-between}.history-line{font-size:11px;line-height:1.9;color:#ccd1d9;margin-top:7px}
+.timer{position:fixed;z-index:30;bottom:88px;left:10px;right:10px;max-width:560px;margin:auto;background:rgba(20,22,27,.6);backdrop-filter:blur(26px) saturate(160%);-webkit-backdrop-filter:blur(26px) saturate(160%);border:1px solid rgba(255,90,54,.45);border-radius:22px;padding:12px;box-shadow:0 20px 50px rgba(0,0,0,.5);display:none}.timer.show{display:block}
+.timerrow{display:flex;align-items:center;justify-content:space-between;gap:8px}.timer strong{font-size:28px}.timer small{display:block;color:var(--muted)}
+.toast{position:fixed;z-index:50;top:16px;left:50%;transform:translateX(-50%);background:rgba(245,246,248,.92);backdrop-filter:blur(14px);color:#111;padding:10px 16px;border-radius:14px;font-size:12px;font-weight:800;display:none;box-shadow:0 10px 30px rgba(0,0,0,.3)}.toast.show{display:block}
+footer{font-size:10px;color:#6f7783;text-align:center;padding:8px 0 20px;position:relative;z-index:1}
+nav{position:fixed;z-index:20;bottom:0;left:0;right:0;background:rgba(15,17,21,.55);backdrop-filter:blur(26px) saturate(180%);-webkit-backdrop-filter:blur(26px) saturate(180%);border-top:1px solid var(--glass-border-soft);height:72px;display:flex;justify-content:center}
+.navin{width:min(820px,100%);display:grid;grid-template-columns:repeat(5,1fr)}
+nav button{background:transparent;box-shadow:none;color:#7a828e;border-radius:0;padding:8px 4px;font-size:11px;font-weight:700}nav button.active{color:var(--accent)}
+@media(min-width:700px){nav{bottom:16px;background:transparent;border:0}.navin{background:rgba(15,17,21,.55);backdrop-filter:blur(26px) saturate(180%);-webkit-backdrop-filter:blur(26px) saturate(180%);border:1px solid var(--glass-border);border-radius:22px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.4)}body{padding-bottom:24px}}
+</style>
+</head>
+<body>
+<div class="orbs" aria-hidden="true"><span></span><span></span><span></span></div>
+<div class="app">
+<header><div class="logo"><i>.</i>OMID FIT</div><div id="headerStatus" class="sub"></div></header>
+<main>
+
+<section id="home" class="view active">
+ <div class="hero card">
+  <h1>مربی تمرین <span class="accent">OMID FIT</span></h1>
+  <p class="sub">برنامه را یک‌بار وارد کن، بعد هر جلسه روز تمرینی را خودت انتخاب کن و همه چیز را ثبت و تحلیل کن.</p>
+  <div class="actions"><button onclick="showView('program')">برنامه من</button><button class="secondary" onclick="showView('workout')">شروع تمرین</button></div>
+ </div>
+ <div id="homeStats" class="statgrid"></div>
+ <div id="backupReminder"></div>
+ <div class="card"><h2>امکانات V4</h2><p class="sub">ثبت وزن، تکرار، RIR و RPE برای هر ست • ثبت درد و خستگی • تشخیص خودکار پیشرفت/افت • نمودار حرکت • گزارش هفتگی و ماهانه • ذخیره خودکار پیشرفت ست‌ها • پشتیبان‌گیری و بازیابی</p></div>
+ <div class="card"><h2>پشتیبان‌گیری</h2><p class="sub">برای محافظت از سوابق، هر چند وقت یک‌بار فایل پشتیبان بگیر.</p><div class="actions"><button class="blue" onclick="exportBackup()">خروجی پشتیبان</button><button class="secondary" onclick="importBackup()">بازیابی پشتیبان</button></div><input type="file" id="backupInput" accept=".json,application/json" style="display:none" onchange="handleBackupFile(event)"></div>
+</section>
+
+<section id="program" class="view">
+ <h1>برنامه من</h1>
+ <p class="sub">یک برنامه پیش‌فرض داخل اپ فعال است و برای شروع تمرین نیازی به وارد کردن دوباره آن نیست؛ در صورت تمایل می‌توانی آن را پایین‌تر ویرایش کنی.</p>
+ <div class="notice">برنامه فعلی: <b>Upper / Lower چهارروزه</b> — شنبه، یکشنبه، سه‌شنبه و چهارشنبه تمرین؛ دوشنبه، پنجشنبه و جمعه استراحت.</div>
+ <div id="programPreview"></div>
+ <div class="card"><h2>گرم‌کردن</h2><div class="sub">۵–۷ دقیقه کاردیوی سبک • آماده‌سازی مفاصل متناسب با جلسه • قبل از حرکت اصلی ۲–۳ ست Ramp-up تدریجی. ست‌های گرم‌کردنی جزو ست‌های کاری نیستند.</div></div>
+ <div class="card">
+  <h2>ویرایش برنامه</h2>
+  <p class="sub">هر خط یک حرکت به‌صورت «نام | تعداد ست | محدوده تکرار | استراحت (ثانیه)» و شروع هر روز با «روز | نام روز». بعد از تغییر، حتماً دکمه ذخیره را بزن.</p>
+  <div class="template">روز | شنبه — Upper A
+پرس سینه هالتر | 3 | 6-10 | 150
+لت‌پول‌دان | 3 | 8-12 | 120</div>
+  <textarea id="programText" placeholder="برنامه را اینجا بنویس یا از دکمه «نمونه» استفاده کن"></textarea>
+  <div class="actions" style="margin-top:8px">
+   <button onclick="saveProgram()">ذخیره برنامه</button>
+   <button class="secondary" onclick="loadExample()">نمونه</button>
+  </div>
+ </div>
+ <div class="actions"><button class="danger" onclick="clearAll()">پاک کردن همه داده‌ها</button></div>
+</section>
+
+<section id="workout" class="view">
+ <h1>تمرین امروز</h1>
+ <div class="card">
+  <label class="sub">روز تمرینی را دستی انتخاب کن:</label>
+  <select id="daySelect" onchange="selectDay(this.value)"></select>
+ </div>
+ <div id="workoutArea"></div>
+</section>
+
+<section id="reports" class="view">
+ <h1>گزارش‌ها</h1>
+ <div class="tabs"><button id="weekBtn" class="active" onclick="setReportMode('week')">هفتگی</button><button id="monthBtn" onclick="setReportMode('month')">ماهانه</button></div>
+ <div id="reportArea"></div>
+</section>
+
+<section id="history" class="view">
+ <h1>سوابق</h1>
+ <div id="historyArea"></div>
+</section>
+
+</main>
+<footer>OMID FIT — داده‌ها در مرورگر همین دستگاه ذخیره می‌شوند.</footer>
+</div>
+
+<div id="timer" class="timer">
+ <div class="timerrow"><div><small>استراحت</small><strong id="timerValue">00:00</strong></div>
+ <div class="actions" style="min-width:230px"><button class="secondary small" onclick="pauseTimer()">مکث/ادامه</button><button class="secondary small" onclick="add30()">+۳۰ ثانیه</button><button class="small" onclick="skipTimer()">رد کردن</button></div></div>
+</div>
+<div id="toast" class="toast"></div>
+
+<nav><div class="navin">
+ <button id="nav-home" onclick="showView('home')">خانه</button>
+ <button id="nav-program" onclick="showView('program')">برنامه</button>
+ <button id="nav-workout" onclick="showView('workout')">تمرین</button>
+ <button id="nav-reports" onclick="showView('reports')">گزارش</button>
+ <button id="nav-history" onclick="showView('history')">سوابق</button>
+</div></nav>
+
+<script>
+(function(){
+"use strict";
+var KEY="FORGE_FA_STANDALONE_V3";
+var OLD_KEY="FORGE_FA_STANDALONE_V2";
+var DEFAULT_PROGRAM_TEXT =
+"روز | شنبه — Upper A\n"+
+"پرس سینه هالتر / دستگاه | 3 | 6-10 | 150\n"+
+"لت‌پول‌دان | 3 | 8-12 | 120\n"+
+"پرس بالا سینه دمبل | 2 | 8-12 | 120\n"+
+"قایقی سیم‌کش | 3 | 8-12 | 120\n"+
+"نشر جانب دمبل / کابل | 2 | 12-20 | 90\n"+
+"پشت بازو سیم‌کش | 2 | 10-15 | 90\n"+
+"جلو بازو دمبل | 2 | 10-15 | 90\n\n"+
+"روز | یکشنبه — Lower A\n"+
+"اسکوات هالتر / دستگاه | 3 | 6-10 | 150\n"+
+"Romanian Deadlift (RDL) | 3 | 8-12 | 150\n"+
+"Leg Press | 2 | 10-15 | 120\n"+
+"Leg Curl | 2 | 10-15 | 90\n"+
+"ساق ایستاده | 3 | 8-15 | 90\n"+
+"Cable Crunch | 2 | 10-15 | 90\n\n"+
+"روز | دوشنبه — استراحت\n\n"+
+"روز | سه‌شنبه — Upper B\n"+
+"پرس بالا سینه دستگاه / هالتر | 3 | 6-10 | 150\n"+
+"زیربغل دستگاه / روئینگ سینه‌تکیه | 3 | 8-12 | 120\n"+
+"پرس سرشانه دستگاه | 2 | 8-12 | 120\n"+
+"لت‌پول‌دان دست خنثی | 2 | 8-12 | 120\n"+
+"فلای کابل / دستگاه | 2 | 10-15 | 90\n"+
+"نشر جانب دمبل / کابل | 2 | 12-20 | 90\n"+
+"پشت بازو بالای سر با کابل | 2 | 10-15 | 90\n"+
+"جلو بازو دمبل روی میز شیبدار | 2 | 10-15 | 90\n\n"+
+"روز | چهارشنبه — Lower B\n"+
+"Hack Squat / Leg Press | 3 | 8-12 | 150\n"+
+"Hip Thrust | 3 | 8-12 | 120\n"+
+"Leg Extension | 2 | 10-15 | 90\n"+
+"Leg Curl | 3 | 10-15 | 90\n"+
+"ساق نشسته | 3 | 10-15 | 90\n"+
+"Cable Crunch | 2 | 10-15 | 90\n\n"+
+"روز | پنجشنبه — استراحت\n\n"+
+"روز | جمعه — استراحت";
+
+var state={program:[],selectedDay:"",history:[],drafts:{}};
+var reportMode="week";
+var timer={id:null,remaining:0,running:false};
+
+function $(id){return document.getElementById(id)}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]})}
+function toast(msg){var t=$("toast");t.textContent=msg;t.classList.add("show");setTimeout(function(){t.classList.remove("show")},1800)}
+function localDateISO(){var d=new Date(),m=String(d.getMonth()+1).padStart(2,"0"),day=String(d.getDate()).padStart(2,"0");return d.getFullYear()+"-"+m+"-"+day}
+function faDate(iso){try{return new Date(iso+"T12:00:00").toLocaleDateString("fa-IR")}catch(e){return iso}}
+function uid(p){return p+Date.now().toString(36)+Math.random().toString(36).slice(2,8)}
+
+function saveState(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){toast("ذخیره‌سازی مرورگر در دسترس نیست")}}
+function loadState(){
+ try{
+  var raw=localStorage.getItem(KEY);
+  if(raw){var x=JSON.parse(raw);if(x){state.program=Array.isArray(x.program)?x.program:[];state.selectedDay=x.selectedDay||"";state.history=Array.isArray(x.history)?x.history:[];state.drafts=x.drafts&&typeof x.drafts==="object"?x.drafts:{}}}
+  if(!state.program.length){
+   var old=localStorage.getItem(OLD_KEY);
+   if(old){var y=JSON.parse(old);if(y){state.program=Array.isArray(y.program)?y.program:[];state.selectedDay=y.selectedDay||"";state.history=Array.isArray(y.history)?y.history:[];state.drafts={};saveState()}}
+  }
+  // First launch: automatically install the user's saved workout program.
+  if(!state.program.length){
+   state.program=parseProgram(DEFAULT_PROGRAM_TEXT);
+   if(state.program.length){
+    state.selectedDay=state.program[0].id;
+    saveState();
+   }
+  }
+ }catch(e){
+  // If localStorage is unavailable, still load the built-in program for this session.
+  if(!state.program.length){
+   try{
+    state.program=parseProgram(DEFAULT_PROGRAM_TEXT);
+    if(state.program.length) state.selectedDay=state.program[0].id;
+   }catch(ignore){}
+  }
+ }
+}
+
+window.showView=function(name){
+ document.querySelectorAll(".view").forEach(function(v){v.classList.remove("active")});
+ var el=$(name);if(el)el.classList.add("active");
+ document.querySelectorAll("nav button").forEach(function(b){b.classList.remove("active")});
+ var nb=$("nav-"+name);if(nb)nb.classList.add("active");
+ if(name==="program")renderProgram();
+ if(name==="workout")renderWorkout();
+ if(name==="reports")renderReports();
+ if(name==="history")renderHistory();
+ updateHome();window.scrollTo(0,0);
+};
+
+window.loadExample=function(){var ta=$("programText");if(!ta)return;ta.value=["روز | شنبه","پرس سینه دستگاه | 4 | 8-12 | 120","پرس بالا سینه دمبل | 3 | 8-12 | 120","","روز | یکشنبه","لت سیمکش | 4 | 8-12 | 90","جلو بازو دمبل | 3 | 10-12 | 75"].join("\n")}
+
+function normalize(s){return String(s||"").replace(/[۰-۹]/g,function(d){return "۰۱۲۳۴۵۶۷۸۹".indexOf(d)}).trim()}
+function parseProgram(text){
+ var lines=text.split(/\r?\n/),days=[],current=null;
+ lines.forEach(function(line){
+  line=line.trim();if(!line)return;
+  var p=line.split("|").map(function(x){return x.trim()}),first=p[0]||"";
+  if(/^روز\s*(\||:|-)/.test(line)||/^day\s*(\||:|-)/i.test(line)){
+   var name=(p[1]||first.replace(/^روز\s*/,"").replace(/^day\s*/i,"")).trim();
+   if(name){current={id:uid("d"),name:name,exercises:[]};days.push(current)}return;
+  }
+  if(!current||p.length<2)return;
+  var sets=parseInt(normalize(p[1]),10),rest=parseInt(normalize(p[3]||"90"),10);
+  if(first&&isFinite(sets)&&sets>0)current.exercises.push({id:uid("e"),name:first,sets:sets,reps:p[2]||"8-12",rest:isFinite(rest)&&rest>0?rest:90});
+ });
+ return days;
+}
+window.saveProgram=function(){
+ var days=parseProgram($("programText").value),count=0;days.forEach(function(d){count+=d.exercises.length});
+ if(!days.length){toast("هیچ روزی پیدا نشد");return}if(!count){toast("حداقل یک حرکت وارد کن");return}
+ state.program=days;if(!state.selectedDay||!days.some(function(d){return d.id===state.selectedDay}))state.selectedDay=days[0].id;
+ saveState();renderProgram();renderWorkout();updateHome();toast("برنامه ذخیره شد ✓");
+}
+function programText(){return state.program.map(function(d){return ["روز | "+d.name].concat(d.exercises.map(function(e){return e.name+" | "+e.sets+" | "+e.reps+" | "+e.rest})).join("\n")}).join("\n\n")}
+function renderProgram(){
+ var ta=$("programText");if(ta&&document.activeElement!==ta)ta.value=state.program.length?programText():"";
+ var p=$("programPreview");p.innerHTML="";
+ if(!state.program.length){p.innerHTML='<div class="empty">هنوز برنامه ذخیره نشده است.</div>';return}
+ state.program.forEach(function(d){var box=document.createElement("div");box.className="day";box.innerHTML='<div class="dayhead"><span class="dayname">'+esc(d.name)+'</span><span class="sub">'+d.exercises.length+" حرکت</span></div>"+d.exercises.map(function(e){return '<div class="sub" style="margin-top:7px">• '+esc(e.name)+" — "+e.sets+" ست × "+esc(e.reps)+" — استراحت "+e.rest+" ثانیه</div>"}).join("");p.appendChild(box)})
+}
+window.clearAll=function(){if(confirm("برنامه و تمام سوابق و پیش‌نویس‌های تمرین پاک شوند؟")){state={program:[],selectedDay:"",history:[],drafts:{}};localStorage.removeItem(KEY);localStorage.removeItem(OLD_KEY);renderProgram();renderWorkout();renderReports();renderHistory();updateHome();toast("همه اطلاعات پاک شد")}}
+
+function updateHome(){
+ var ex=0,sets=0;state.program.forEach(function(d){ex+=d.exercises.length;d.exercises.forEach(function(e){sets+=e.sets})});
+ $("homeStats").innerHTML='<div class="stat"><b>'+state.program.length+'</b><span>روز برنامه</span></div><div class="stat"><b>'+ex+'</b><span>حرکت</span></div><div class="stat"><b>'+state.history.length+'</b><span>جلسه ثبت‌شده</span></div>';
+ $("headerStatus").textContent=state.program.length?"برنامه فعال":"برنامه وارد نشده";
+ renderBackupReminder();
+}
+
+var BACKUP_KEY="OMID_FIT_LAST_BACKUP_AT";
+function daysSinceBackup(){
+ var raw=null;try{raw=localStorage.getItem(BACKUP_KEY)}catch(e){}
+ if(!raw)return null;
+ var n=parseInt(raw,10);if(!isFinite(n))return null;
+ return Math.floor((Date.now()-n)/86400000);
+}
+function markBackedUp(){try{localStorage.setItem(BACKUP_KEY,String(Date.now()))}catch(e){}}
+function renderBackupReminder(){
+ var box=$("backupReminder");if(!box)return;
+ if(!state.history.length){box.innerHTML="";return}
+ var days=daysSinceBackup();
+ if(days!==null&&days<7){box.innerHTML="";return}
+ var msg=days===null?"هنوز پشتیبانی نگرفته‌ای.":"از آخرین پشتیبان "+days+" روز گذشته.";
+ box.innerHTML='<div class="notice">یادآوری هفتگی: '+msg+' برای محافظت از سوابقت الان یک فایل پشتیبان بگیر.<div class="actions" style="margin-top:8px"><button class="blue small" onclick="exportBackup()">خروجی پشتیبان</button></div></div>';
+}
+
+function currentDraftKey(){return localDateISO()+"__"+state.selectedDay}
+function getDraft(){return state.drafts[currentDraftKey()]||{session:{fatigue:"",pain:"",energy:""},exercises:{}}}
+function saveDraft(d){state.drafts[currentDraftKey()]=d;saveState()}
+function previousFor(name){
+ for(var i=state.history.length-1;i>=0;i--){var h=state.history[i],f=h.exercises&&h.exercises.find(function(e){return e.name===name});if(f)return f}
+ return null;
+}
+function epley(w,r){w=parseFloat(String(w).replace(",","."));r=parseFloat(r);if(!isFinite(w)||!isFinite(r)||w<=0||r<=0)return null;return w*(1+r/30)}
+function progressFor(name,draftEx){
+ var prev=previousFor(name);if(!prev||!prev.sets||!prev.sets.length)return null;
+ function best(x){var b=null;x.forEach(function(s){var v=epley(s.weight,s.reps);if(v!==null&&(b===null||v>b))b=v});return b}
+ var old=best(prev.sets),now=best(draftEx&&draftEx.sets||[]);
+ if(old===null||now===null)return null;
+ var pct=((now-old)/old)*100;
+ return {old:old,now:now,pct:pct,cls:pct>2?"progress-good":pct<-2?"progress-bad":"progress-flat",text:pct>2?"↑ پیشرفت":pct<-2?"↓ افت عملکرد":"→ تقریباً ثابت"};
+}
+
+function renderWorkout(){
+ var sel=$("daySelect");sel.innerHTML="";
+ if(!state.program.length){$("workoutArea").innerHTML='<div class="empty">اول برنامه را وارد و ذخیره کن.</div>';return}
+ state.program.forEach(function(d){var o=document.createElement("option");o.value=d.id;o.textContent=d.name;sel.appendChild(o)});
+ if(!state.selectedDay||!state.program.some(function(d){return d.id===state.selectedDay}))state.selectedDay=state.program[0].id;
+ sel.value=state.selectedDay;renderSelectedWorkout();
+}
+window.selectDay=function(id){state.selectedDay=id;saveState();renderSelectedWorkout()}
+
+function renderSelectedWorkout(){
+ var d=state.program.find(function(x){return x.id===state.selectedDay}),area=$("workoutArea");if(!d){area.innerHTML="";return}
+ var draft=getDraft(),html='<div class="notice">روز <b>'+esc(d.name)+'</b> — برای هر ست <b>وزن، تکرار، RIR و RPE</b> را ثبت کن. پس از زدن «انجام شد»، تایمر استراحت همان حرکت خودکار شروع می‌شود.</div>';
+ html+='<div class="card"><h2>وضعیت جلسه</h2><div class="metric-grid"><div class="metric"><label>خستگی (۰ تا ۱۰)</label><input inputmode="numeric" id="sess-fatigue" value="'+esc(draft.session.fatigue||"")+'" placeholder="مثلاً 4"></div><div class="metric"><label>درد کلی (۰ تا ۱۰)</label><input inputmode="numeric" id="sess-pain" value="'+esc(draft.session.pain||"")+'" placeholder="مثلاً 2"></div><div class="metric"><label>انرژی (۰ تا ۱۰)</label><input inputmode="numeric" id="sess-energy" value="'+esc(draft.session.energy||"")+'" placeholder="مثلاً 8"></div></div></div>';
+ d.exercises.forEach(function(e,ei){
+  var de=draft.exercises[e.id]||{sets:[],pain:""};var pr=progressFor(e.name,de),prev=previousFor(e.name);
+  html+='<div class="exercise"><div class="exhead"><div><div class="exname">'+esc(e.name)+'</div><div class="meta">'+e.sets+" ست × "+esc(e.reps)+" | استراحت "+e.rest+" ثانیه</div></div>"+(pr?'<span class="badge '+pr.cls+'">'+pr.text+" "+Math.abs(pr.pct).toFixed(1)+"%</span>":"")+'</div>';
+  if(prev)html+='<div class="prev">آخرین رکورد: '+prev.sets.map(function(s,i){return (i+1)+") "+esc(s.weight||"—")+"kg × "+esc(s.reps||"—")+" | RIR "+esc(s.rir||"—")+" | RPE "+esc(s.rpe||"—")}).join(" &nbsp; ")+"</div>";
+  html+='<div class="metric-grid" style="margin-top:9px"><div class="metric"><label>درد این حرکت (۰ تا ۱۰)</label><input inputmode="numeric" id="pain-'+ei+'" value="'+esc(de.pain||"")+'" placeholder="اختیاری"></div><div class="metric"><label>یادداشت حرکت</label><input id="note-'+ei+'" value="'+esc(de.note||"")+'" placeholder="اختیاری"></div><div class="metric"><label>تأکید</label><div class="sub" style="padding-top:8px">RIR کمتر = نزدیک‌تر به ناتوانی</div></div></div>';
+  html+='<div class="tablewrap"><table><thead><tr><th>ست</th><th>وزن</th><th>تکرار</th><th>RIR</th><th>RPE</th><th>ثبت</th></tr></thead><tbody>';
+  for(var j=0;j<e.sets;j++){var s=de.sets[j]||{};html+='<tr><td>'+(j+1)+'</td><td><input inputmode="decimal" id="w-'+ei+"-"+j+'" value="'+esc(s.weight||"")+'" placeholder="kg"></td><td><input inputmode="numeric" id="r-'+ei+"-"+j+'" value="'+esc(s.reps||"")+'" placeholder="reps"></td><td><input inputmode="numeric" id="rir-'+ei+"-"+j+'" value="'+esc(s.rir||"")+'" placeholder="0-5"></td><td><input inputmode="decimal" id="rpe-'+ei+"-"+j+'" value="'+esc(s.rpe||"")+'" placeholder="1-10"></td><td><button class="done '+(s.done?"isdone":"")+'" id="b-'+ei+"-"+j+'" onclick="completeSet('+ei+','+j+','+e.rest+')">'+(s.done?"ثبت شد ✓":"انجام شد")+"</button></td></tr>"}
+  html+='</tbody></table></div></div>';
+ });
+ html+='<button class="green" style="width:100%;margin-top:6px" onclick="saveSession()">ذخیره و پایان جلسه</button>';
+ area.innerHTML=html;bindDraftInputs(d);
+}
+
+function bindDraftInputs(d){
+ var ids=["sess-fatigue","sess-pain","sess-energy"];
+ ids.forEach(function(id){var el=$(id);if(el)el.addEventListener("input",saveCurrentInputs)});
+ d.exercises.forEach(function(e,ei){
+  ["pain-"+ei,"note-"+ei].forEach(function(id){var el=$(id);if(el)el.addEventListener("input",saveCurrentInputs)});
+  for(var j=0;j<e.sets;j++)["w-"+ei+"-"+j,"r-"+ei+"-"+j,"rir-"+ei+"-"+j,"rpe-"+ei+"-"+j].forEach(function(id){var el=$(id);if(el)el.addEventListener("input",saveCurrentInputs)});
+ });
+}
+function clampNum(v,min,max){if(v==="")return "";var n=parseFloat(String(v).replace(",","."));if(!isFinite(n))return "";return Math.max(min,Math.min(max,n))}
+function saveCurrentInputs(){
+ var d=state.program.find(function(x){return x.id===state.selectedDay});if(!d)return;
+ var draft=getDraft();draft.session.fatigue=clampNum($("sess-fatigue").value,0,10);draft.session.pain=clampNum($("sess-pain").value,0,10);draft.session.energy=clampNum($("sess-energy").value,0,10);
+ d.exercises.forEach(function(e,ei){var de=draft.exercises[e.id]||{sets:[],pain:"",note:""};de.pain=clampNum($("pain-"+ei).value,0,10);de.note=$("note-"+ei).value;de.sets=[];for(var j=0;j<e.sets;j++){de.sets.push({weight:$("w-"+ei+"-"+j).value,reps:$("r-"+ei+"-"+j).value,rir:clampNum($("rir-"+ei+"-"+j).value,0,10),rpe:clampNum($("rpe-"+ei+"-"+j).value,1,10),done:$("b-"+ei+"-"+j).classList.contains("isdone")})}draft.exercises[e.id]=de});
+ saveDraft(draft);
+}
+window.completeSet=function(ei,j,rest){
+ saveCurrentInputs();var d=state.program.find(function(x){return x.id===state.selectedDay});if(!d)return;
+ var key=currentDraftKey(),draft=state.drafts[key]||getDraft(),e=d.exercises[ei],de=draft.exercises[e.id]||{sets:[]};de.sets=de.sets||[];de.sets[j]=de.sets[j]||{};
+ var wasDone=!!de.sets[j].done;de.sets[j].done=!wasDone;draft.exercises[e.id]=de;state.drafts[key]=draft;saveState();
+ var b=$("b-"+ei+"-"+j);
+ if(!wasDone){if(b){b.classList.add("isdone");b.textContent="ثبت شد ✓"}startTimer(rest);toast("ست ثبت شد؛ تایمر شروع شد")}
+ else{if(b){b.classList.remove("isdone");b.textContent="انجام شد"}toast("لغو شد")}
+}
+function gatherSession(){
+ var d=state.program.find(function(x){return x.id===state.selectedDay});if(!d)return null;
+ saveCurrentInputs();var draft=getDraft(),out={id:uid("s"),timestamp:Date.now(),date:localDateISO(),day:d.name,dayId:d.id,metrics:{fatigue:draft.session.fatigue,pain:draft.session.pain,energy:draft.session.energy},exercises:[]},total=0;
+ d.exercises.forEach(function(e){var de=draft.exercises[e.id];if(!de)return;var sets=(de.sets||[]).filter(function(s){return s&&s.done});if(sets.length){out.exercises.push({name:e.name,exerciseId:e.id,pain:de.pain||"",note:de.note||"",sets:sets});total+=sets.length}});
+ return total?out:null;
+}
+window.saveSession=function(){
+ var s=gatherSession();if(!s){toast("حداقل یک ست را ثبت کن");return}
+ state.history.push(s);delete state.drafts[currentDraftKey()];saveState();renderWorkout();renderHistory();renderReports();updateHome();skipTimer();toast("جلسه ذخیره شد ✓");
+}
+
+function startTimer(sec){clearInterval(timer.id);timer.remaining=Math.max(1,parseInt(sec,10)||90);timer.running=true;$("timer").classList.add("show");updateTimer();timer.id=setInterval(function(){if(!timer.running)return;timer.remaining--;updateTimer();if(timer.remaining<=0){clearInterval(timer.id);timer.running=false;$("timer").classList.remove("show");if(navigator.vibrate)navigator.vibrate([200,100,200]);toast("استراحت تمام شد 🔔")}},1000)}
+function updateTimer(){var s=Math.max(0,timer.remaining),m=Math.floor(s/60),r=s%60;$("timerValue").textContent=(m<10?"0":"")+m+":"+(r<10?"0":"")+r}
+window.pauseTimer=function(){timer.running=!timer.running;toast(timer.running?"تایمر ادامه یافت":"تایمر مکث شد")}
+window.add30=function(){timer.remaining+=30;updateTimer()}
+window.skipTimer=function(){clearInterval(timer.id);timer.running=false;$("timer").classList.remove("show")}
+
+function validTs(h){return h.timestamp&&isFinite(h.timestamp)}
+function inRange(h,mode){
+ if(validTs(h)){var days=mode==="week"?7:31;return Date.now()-h.timestamp<=days*86400000}
+ return true
+}
+function historyWindow(mode){return state.history.filter(function(h){return inRange(h,mode)})}
+function allSessions(){return state.history.slice().filter(function(h){return h&&h.exercises})}
+function totalSets(s){var n=0;s.forEach(function(h){h.exercises.forEach(function(e){n+=e.sets.length})});return n}
+function totalVolume(s){var n=0;s.forEach(function(h){h.exercises.forEach(function(e){e.sets.forEach(function(x){var w=parseFloat(String(x.weight||0).replace(",",".")),r=parseFloat(x.reps||0);if(isFinite(w)&&isFinite(r))n+=w*r})})});return n}
+function avgMetric(s,key){var a=[];s.forEach(function(h){var v=parseFloat(h.metrics&&h.metrics[key]);if(isFinite(v))a.push(v)});return a.length?a.reduce(function(x,y){return x+y},0)/a.length:null}
+function avgRPE(s){var a=[];s.forEach(function(h){h.exercises.forEach(function(e){e.sets.forEach(function(x){var v=parseFloat(x.rpe);if(isFinite(v))a.push(v)})})});return a.length?a.reduce(function(x,y){return x+y},0)/a.length:null}
+function uniqueExercises(){var map={},out=[];state.program.forEach(function(d){d.exercises.forEach(function(e){if(!map[e.name]){map[e.name]=1;out.push(e.name)}})});state.history.forEach(function(h){h.exercises&&h.exercises.forEach(function(e){if(!map[e.name]){map[e.name]=1;out.push(e.name)}})});return out}
+window.setReportMode=function(m){reportMode=m;$("weekBtn").classList.toggle("active",m==="week");$("monthBtn").classList.toggle("active",m==="month");renderReports()}
+function progressText(name){
+ var arr=[];
+ state.history.forEach(function(h){var e=h.exercises&&h.exercises.find(function(x){return x.name===name});if(e){var best=0;e.sets.forEach(function(s){var v=epley(s.weight,s.reps);if(v&&v>best)best=v});if(best)arr.push({ts:h.timestamp||null,label:h.date||"",val:best})}});
+ return arr.slice(-12);
+}
+function svgLine(data,title){
+ if(!data.length)return '<div class="empty">برای این حرکت هنوز داده کافی نیست.</div>';
+ var vals=data.map(function(x){return x.val}),min=Math.min.apply(null,vals),max=Math.max.apply(null,vals);if(min===max){min-=1;max+=1}
+ var W=700,H=180,p=28,pts=data.map(function(x,i){var xx=p+(i*(W-2*p)/Math.max(1,data.length-1)),yy=H-p-(x.val-min)*(H-2*p)/(max-min);return [xx,yy]}),poly=pts.map(function(a){return a[0]+","+a[1]}).join(" ");
+ var circles=pts.map(function(a){return '<circle cx="'+a[0]+'" cy="'+a[1]+'" r="4" fill="var(--accent)"></circle>'}).join("");
+ return '<div class="chart"><div class="sub">'+esc(title)+' — برآورد 1RM</div><svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none"><line x1="'+p+'" y1="'+(H-p)+'" x2="'+(W-p)+'" y2="'+(H-p)+'" stroke="#39404a"/><line x1="'+p+'" y1="'+p+'" x2="'+p+'" y2="'+(H-p)+'" stroke="#39404a"/><polyline points="'+poly+'" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></polyline>'+circles+'</svg><div class="legend"><span>'+esc(faDate(localDateISO()))+'</span><span>بیشترین: '+max.toFixed(1)+' kg</span><span>کمترین: '+min.toFixed(1)+' kg</span></div></div>'
+}
+function renderReports(){
+ var area=$("reportArea"),s=historyWindow(reportMode);
+ if(!state.history.length){area.innerHTML='<div class="empty">برای ساخت گزارش، حداقل یک جلسه ذخیره کن.</div>';return}
+ var sets=totalSets(s),vol=totalVolume(s),rpe=avgRPE(s),pain=avgMetric(s,"pain"),fat=avgMetric(s,"fatigue"),energy=avgMetric(s,"energy");
+ var days=reportMode==="week"?"۷ روز اخیر":"۳۱ روز اخیر";
+ var html='<div class="notice">گزارش '+days+' — معیار «پیشرفت/افت» بر اساس روند برآورد 1RM (فرمول Epley) و همچنین حجم تمرین بررسی می‌شود.</div>';
+ html+='<div class="report-grid"><div class="report-card"><b>'+s.length+'</b><span>جلسه</span></div><div class="report-card"><b>'+sets+'</b><span>ست ثبت‌شده</span></div><div class="report-card"><b>'+Math.round(vol).toLocaleString("en-US")+'</b><span>حجم (kg×rep)</span></div><div class="report-card"><b>'+(rpe===null?"—":rpe.toFixed(1))+'</b><span>میانگین RPE</span></div><div class="report-card"><b>'+(pain===null?"—":pain.toFixed(1))+'</b><span>میانگین درد</span></div><div class="report-card"><b>'+(fat===null?"—":fat.toFixed(1))+'</b><span>میانگین خستگی</span></div></div>';
+ var exs=uniqueExercises().slice(0,12);html+='<div class="card"><h2>حرکات و روند</h2><select id="reportEx" onchange="renderSelectedReportChart()">';
+ exs.forEach(function(e){html+='<option value="'+esc(e)+'">'+esc(e)+'</option>'});html+='</select><div id="reportChart"></div></div>';
+ html+='<div class="card"><h2>وضعیت کلی</h2><div class="sub">';
+ if(energy!==null)html+="انرژی میانگین: <b>"+energy.toFixed(1)+"/10</b><br>";
+ if(pain!==null)html+="درد میانگین: <b>"+pain.toFixed(1)+"/10</b><br>";
+ if(fat!==null)html+="خستگی میانگین: <b>"+fat.toFixed(1)+"/10</b><br>";
+ html+="</div></div>";area.innerHTML=html;renderSelectedReportChart();
+}
+window.renderSelectedReportChart=function(){var s=$("reportEx");if(!s)return;var name=s.value,data=progressText(name);$("reportChart").innerHTML=svgLine(data,"روند "+name)}
+
+function renderHistory(){
+ var a=$("historyArea");if(!state.history.length){a.innerHTML='<div class="empty">هنوز جلسه‌ای ذخیره نشده است.</div>';return}
+ a.innerHTML=state.history.slice().reverse().map(function(h){return '<div class="history-item"><div class="history-head"><b>'+esc(h.day||"تمرین")+'</b><span class="sub">'+esc(validTs(h)?faDate(h.date):String(h.date||""))+'</span></div><div class="history-line">'+((h.metrics&&h.metrics.energy!=="")?"انرژی "+esc(h.metrics.energy)+"/10 • ":"")+((h.metrics&&h.metrics.fatigue!=="")?"خستگی "+esc(h.metrics.fatigue)+"/10 • ":"")+((h.metrics&&h.metrics.pain!=="")?"درد "+esc(h.metrics.pain)+"/10":"")+'</div>'+h.exercises.map(function(e){return '<div class="history-line"><b>'+esc(e.name)+'</b>: '+e.sets.map(function(s){return esc(s.weight||"—")+"kg × "+esc(s.reps||"—")+" | RIR "+esc(s.rir||"—")+" | RPE "+esc(s.rpe||"—")}).join(" ، ")+'</div>'}).join("")+"</div>"}).join("")
+}
+
+window.exportBackup=function(){
+ var blob=new Blob([JSON.stringify({app:"OMID_FIT",version:3,exportedAt:new Date().toISOString(),state:state},null,2)],{type:"application/json"});
+ var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="omidfit-backup-"+localDateISO()+".json";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(a.href)},1000);markBackedUp();renderBackupReminder();toast("فایل پشتیبان ساخته شد");
+}
+window.importBackup=function(){$("backupInput").click()}
+window.handleBackupFile=function(ev){
+ var f=ev.target.files&&ev.target.files[0];if(!f)return;var rd=new FileReader();
+ rd.onload=function(){try{var x=JSON.parse(rd.result);if(!x||!x.state)throw new Error("bad");if(!confirm("اطلاعات فعلی با این پشتیبان جایگزین شود؟"))return;state=x.state;state.program=Array.isArray(state.program)?state.program:[];state.history=Array.isArray(state.history)?state.history:[];state.drafts=state.drafts&&typeof state.drafts==="object"?state.drafts:{};saveState();renderProgram();renderWorkout();renderReports();renderHistory();updateHome();toast("پشتیبان بازیابی شد ✓")}catch(e){toast("فایل پشتیبان معتبر نیست")}};
+ rd.readAsText(f);ev.target.value="";
+}
+
+window.onerror=function(msg){document.body.insertAdjacentHTML("afterbegin",'<div style="position:fixed;z-index:99;top:0;left:0;right:0;background:#5b1717;color:#fff;padding:10px;text-align:center;font:12px Tahoma">خطای برنامه: '+esc(msg)+"</div>")};
+
+loadState();renderProgram();renderWorkout();renderReports();renderHistory();updateHome();$("nav-home").classList.add("active");
+})();
+</script>
+</body>
+</html>
